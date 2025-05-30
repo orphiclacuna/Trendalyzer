@@ -6,6 +6,8 @@ from mistralai import Mistral
 import requests
 import json
 import logging
+import os
+from dotenv import load_dotenv
 
 # Configure logging
 logging.basicConfig(
@@ -14,8 +16,10 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-JINA_API_KEY = "jina_ca164fd6cb3a47d1a4f7aab3dd0f0873Sy1Ex5JRB2Hd-U53iZvgL6HO3wgI"
-MISTRAL_API_KEY = "L8643YC2RnEOaMYmrA5EIMLvVkjAwW4o"
+load_dotenv()
+
+JINA_API_KEY = os.getenv("API_KEY") 
+MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")
 
 print(JINA_API_KEY)
 
