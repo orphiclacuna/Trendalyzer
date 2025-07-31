@@ -14,9 +14,109 @@ function getCookie(name) {
     return cookieValue;
 }
 
-// Wait for DOM to be fully loaded
+// Cryptocurrency list for autocomplete
+const cryptocurrencies = [
+    { name: "Bitcoin", symbol: "BTC" },
+    { name: "Ethereum", symbol: "ETH" },
+    { name: "Tether", symbol: "USDT" },
+    { name: "XRP", symbol: "XRP" },
+    { name: "BNB", symbol: "BNB" },
+    { name: "Solana", symbol: "SOL" },
+    { name: "USD Coin", symbol: "USDC" },
+    { name: "Dogecoin", symbol: "DOGE" },
+    { name: "Cardano", symbol: "ADA" },
+    { name: "TRON", symbol: "TRX" },
+    { name: "Wrapped Bitcoin", symbol: "WBTC" },
+    { name: "Chainlink", symbol: "LINK" },
+    { name: "Avalanche", symbol: "AVAX" },
+    { name: "Stellar", symbol: "XLM" },
+    { name: "Shiba Inu", symbol: "SHIB" },
+    { name: "Toncoin", symbol: "TON" },
+    { name: "Bitcoin Cash", symbol: "BCH" },
+    { name: "Polkadot", symbol: "DOT" },
+    { name: "Litecoin", symbol: "LTC" },
+    { name: "Pepe", symbol: "PEPE" }
+];
+
+// Initialize autocomplete functionality
+function initializeAutocomplete() {
+    const coinInput = document.getElementById('coinInput');
+    const autocompleteResults = document.getElementById('autocompleteResults');
+    const clearIcon = document.getElementById('clearIcon');
+
+    // Handle input changes
+    coinInput.addEventListener('input', () => {
+        const query = coinInput.value.toLowerCase().trim();
+        
+        // Show/hide clear icon
+        clearIcon.style.display = coinInput.value ? 'block' : 'none';
+        
+        // Clear results if query is empty
+        if (!query) {
+            autocompleteResults.style.display = 'none';
+            autocompleteResults.innerHTML = '';
+            return;
+        }
+
+        // Filter cryptocurrencies
+        const filtered = cryptocurrencies.filter(crypto =>
+            crypto.name.toLowerCase().includes(query) || 
+            crypto.symbol.toLowerCase().includes(query)
+        );
+
+        if (filtered.length > 0) {
+            autocompleteResults.innerHTML = '';
+            autocompleteResults.style.display = 'block';
+            
+            filtered.slice(0, 8).forEach(crypto => { // Limit to 8 results
+                const item = document.createElement('div');
+                item.className = 'autocomplete-item';
+                item.textContent = `${crypto.name} (${crypto.symbol})`;
+                item.addEventListener('click', () => {
+                    coinInput.value = crypto.name;
+                    autocompleteResults.style.display = 'none';
+                    autocompleteResults.innerHTML = '';
+                    clearIcon.style.display = 'block';
+                });
+                autocompleteResults.appendChild(item);
+            });
+        } else {
+            autocompleteResults.style.display = 'none';
+            autocompleteResults.innerHTML = '';
+        }
+    });
+
+    // Clear icon functionality
+    clearIcon.addEventListener('click', () => {
+        coinInput.value = '';
+        clearIcon.style.display = 'none';
+        autocompleteResults.style.display = 'none';
+        autocompleteResults.innerHTML = '';
+        coinInput.focus();
+    });
+
+    // Hide autocomplete when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!autocompleteResults.contains(e.target) && e.target !== coinInput) {
+            autocompleteResults.style.display = 'none';
+            autocompleteResults.innerHTML = '';
+        }
+    });
+}
+
+// Sentiment mapping for images (if needed in future)
+const sentimentImageMap = {
+    'bullish': '/static/tracker/assets/Bullish.png',
+    'bearish': '/static/tracker/assets/Bearish.png', 
+    'neutral': '/static/tracker/assets/Neutral.png'
+};
+
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded, initializing form handler');
+    console.log('DOM loaded, initializing app');
+    
+    // Initialize autocomplete
+    initializeAutocomplete();
+    
     const form = document.getElementById('cryptoForm');
     if (!form) {
         console.error('Could not find form element');
@@ -65,11 +165,29 @@ document.addEventListener('DOMContentLoaded', function() {
         const sentimentBadge = document.querySelector('#sentimentIndicator .badge');
         sentimentBadge.textContent = data.sentiment;
         sentimentBadge.className = `badge badge-${data.sentiment.toLowerCase()}`;
-          // Convert the content to markdown and update
+
+        // Update hero image if available
+        const heroImage = document.getElementById('heroImage');
+        if (data.hero_image) {
+            heroImage.src = data.hero_image;
+            heroImage.style.display = 'block';
+        } else {
+            heroImage.style.display = 'none';
+        }
+
+        // Update sentiment meter if available
+        const sentimentMeter = document.getElementById('sentimentMeter');
+        if (sentimentImageMap[data.sentiment.toLowerCase()]) {
+            sentimentMeter.src = sentimentImageMap[data.sentiment.toLowerCase()];
+            sentimentMeter.style.display = 'block';
+        } else {
+            sentimentMeter.style.display = 'none';
+        }
+
         const markdownContent = formatContentToMarkdown(data.content);
         document.getElementById('newsContent').innerHTML = marked.parse(markdownContent);
         
-        // Update URLs list with cards
+
         const urlsList = document.getElementById('urlsList');
         urlsList.innerHTML = '';
         data.urls.forEach(url => {
@@ -95,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function() {
             urlText.className = 'url-text';
             try {
                 const urlObj = new URL(url);
-                urlText.textContent = urlObj.hostname + urlObj.pathname;
+                urlText.textContent = urlObj.hostname;
             } catch {
                 urlText.textContent = url;
             }
@@ -117,22 +235,16 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function formatContentToMarkdown(content) {
-    // Split content into paragraphs
     const paragraphs = content.split('\n\n');
     
-    // Format each paragraph
     return paragraphs.map(para => {
-        // If paragraph starts with a number followed by a dot, make it a heading
         if (/^\d+\./.test(para)) {
             return '## ' + para;
         }
-        // Add bullet points for lists
         if (para.startsWith('- ')) {
             return para;
         }
-        // Wrap numbers in backticks
         para = para.replace(/(\$[\d,.]+|\d+%|[\d,.]+)/g, '`$1`');
-        // Highlight important terms
         para = para.replace(/(bullish|bearish|neutral|positive|negative)/gi, '**$1**');
         return para;
     }).join('\n\n');

@@ -95,7 +95,7 @@ def get_combined_news_and_sentiment(coin_name):
             
             full_content = response_data['choices'][0]['message']['content']
             content = get_summary(full_content)
-            urls_list = response_data['visitedURLs'][:10]
+            urls_list = response_data['visitedURLs']
             sentiment = extract_sentiment(full_content)
 
             result = {

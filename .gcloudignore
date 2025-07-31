@@ -1,0 +1,19 @@
+# Ignore Python cache files
+__pycache__/
+*.pyc
+
+# Ignore your local environment variables
+.env
+
+# Ignore VS Code settings folder
+.vscode/
+
+# Ignore local SQLite database (won't persist on GAE)
+db.sqlite3
+
+# Ignore zipped archives
+*.zip
+
+# Ignore test and coverage files (if any)
+.coverage
+tests/
