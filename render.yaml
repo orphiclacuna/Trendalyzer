@@ -2,7 +2,7 @@ services:
   - type: web
     name: trendtracker-app
     env: python
-    buildCommand: pip install -r requirements.txt
+    buildCommand: ./build.sh
     startCommand: gunicorn trendtracker.wsgi:application
     envVars:
       - key: DJANGO_SECRET_KEY
