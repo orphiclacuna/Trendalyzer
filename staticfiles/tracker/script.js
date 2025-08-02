@@ -112,7 +112,6 @@ const sentimentImageMap = {
 };
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded, initializing app');
     
     // Initialize autocomplete
     initializeAutocomplete();
@@ -123,10 +122,8 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
     
-    console.log('Form found:', form);
     
     form.addEventListener('submit', async function(e) {
-        console.log('Form submitted!');
     e.preventDefault();
     
     const coinInput = document.getElementById('coinInput');
