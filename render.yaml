@@ -6,10 +6,6 @@ services:
     startCommand: gunicorn trendtracker.wsgi:application
     envVars:
       - key: DJANGO_SECRET_KEY
-        sync: false
+        value: "django-insecure-c3njcxxe+$gy3bbahjb8tfzn8d&=n#(fwr_)fhuras#!aet2kk"
       - key: DEBUG
         value: false
-      - key: API_KEY
-        sync: false
-      - key: MISTRAL_API_KEY
-        sync: false
