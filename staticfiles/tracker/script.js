@@ -134,17 +134,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Reset and show loading
     error.classList.add('d-none');
     results.classList.add('d-none');
-    loading.classList.remove('d-none');      try {
+    loading.classList.remove('d-none');      
+    try {
         const csrftoken = getCookie('csrftoken');
-        console.log('CSRF token:', csrftoken);
-        console.log('Making request to /api/crypto-news/ with coin:', coinInput.value.trim());
         
         const requestData = {
             coin: coinInput.value.trim()
         };
-        console.log('Request data:', requestData);
         
-        const response = await fetch('/api/crypto-news/', {            method: 'POST',
+        const response = await fetch('/api/crypto-news/', {            
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': csrftoken,

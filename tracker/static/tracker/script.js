@@ -112,7 +112,6 @@ const sentimentImageMap = {
 };
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded, initializing app');
     
     // Initialize autocomplete
     initializeAutocomplete();
@@ -122,11 +121,8 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('Could not find form element');
         return;
     }
-    
-    console.log('Form found:', form);
-    
+        
     form.addEventListener('submit', async function(e) {
-        console.log('Form submitted!');
     e.preventDefault();
     
     const coinInput = document.getElementById('coinInput');
@@ -137,17 +133,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Reset and show loading
     error.classList.add('d-none');
     results.classList.add('d-none');
-    loading.classList.remove('d-none');      try {
+    loading.classList.remove('d-none');      
+    try {
         const csrftoken = getCookie('csrftoken');
-        console.log('CSRF token:', csrftoken);
-        console.log('Making request to /api/crypto-news/ with coin:', coinInput.value.trim());
         
         const requestData = {
             coin: coinInput.value.trim()
         };
-        console.log('Request data:', requestData);
         
-        const response = await fetch('/api/crypto-news/', {            method: 'POST',
+        const response = await fetch('/api/crypto-news/', {            
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': csrftoken,

@@ -6,10 +6,10 @@ services:
     startCommand: gunicorn trendtracker.wsgi:application
     envVars:
       - key: DJANGO_SECRET_KEY
-        sync: false
+        sync: false  # Set this in Render dashboard
       - key: DEBUG
         value: false
       - key: API_KEY
-        sync: false
+        sync: false  # Set this in Render dashboard
       - key: MISTRAL_API_KEY
-        sync: false
+        sync: false  # Set this in Render dashboard
