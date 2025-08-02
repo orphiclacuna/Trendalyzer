@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: trendtracker-app
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn trendtracker.wsgi:application
+    envVars:
+      - key: DJANGO_SECRET_KEY
+        value: "django-insecure-c3njcxxe+$gy3bbahjb8tfzn8d&=n#(fwr_)fhuras#!aet2kk"
+      - key: DEBUG
+        value: false

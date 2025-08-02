@@ -4,5 +4,5 @@ entrypoint: gunicorn -b :$PORT trendtracker.wsgi
 
 env_variables:
   DJANGO_SETTINGS_MODULE: "trendtracker.settings"
-  SECRET_KEY: "your-production-secret"
+  DJANGO_SECRET_KEY: "your-production-secret"
   DEBUG: "False"
