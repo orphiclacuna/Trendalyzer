@@ -48,10 +48,18 @@ trendtracker/
 1. **Clone the repository** and navigate to the project directory.
 
 2. **Install dependencies**:  
-   Make sure you have Django installed. If not, install it using:
+   Install all required dependencies:
     ```sh
-    pip install django
+    pip install -r requirements.txt
     ```
+   
+   **Key dependencies include**:
+   - `Django` - Web framework
+   - `mistralai` - AI-powered text summarization
+   - `python-dotenv` - Environment variable management
+   - `requests` - HTTP requests for API calls
+   - `whitenoise` - Static file serving for production
+   - `gunicorn` - WSGI HTTP Server for production
 
 3. **Set up environment variables**:  
    Create a `.env` file in the `tracker/` directory with your API keys:
